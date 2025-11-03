@@ -19,6 +19,8 @@ func RegisterRoutes() *chi.Mux {
 	r.Post("/products", handlers.CreateProduct)
 	r.Get("/products/{id}", handlers.GetProductByID)
 	r.Put("/products/{id}", handlers.UpdateProduct)
+	r.Delete("/products/{id}", handlers.DeleteProduct)
+
 
 	return r
 }

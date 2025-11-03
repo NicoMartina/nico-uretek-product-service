@@ -5,16 +5,16 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/NicoMartina/nico-uretek-product-service/store"
+
 	"github.com/NicoMartina/nico-uretek-product-service/models"
 	"github.com/go-chi/chi/v5"
 )
 
-var products []models.Product
-var nextId int = 1
 
 func GetProducts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(products)
+	json.NewEncoder(w).Encode(store.Products)
 }
 
 func CreateProduct(w http.ResponseWriter, r *http.Request) {
@@ -25,9 +25,9 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p.Id = nextId
-	nextId++
-	products = append(products, p)
+	p.Id = store.NextId
+	store.NextId++
+	store.Products = append(store.Products, p)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(p)
@@ -41,7 +41,7 @@ func GetProductByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, p := range products {
+	for _, p := range store.Products {
 		if p.Id == id {
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(p)
@@ -66,18 +66,18 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i := range products {
-		if products[i].Id == id {
+	for i := range store.Products {
+		if store.Products[i].Id == id {
 			if update.Name != "" {
-				products[i].Name = update.Name
+				store.Products[i].Name = update.Name
 			}
 			if update.Price > 0 {
-				products[i].Price = update.Price
+				store.Products[i].Price = update.Price
 			}
-			products[i].Description = update.Description
+			store.Products[i].Description = update.Description
 
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(products[i])
+			json.NewEncoder(w).Encode(store.Products[i])
 			return
 		}
 	}
