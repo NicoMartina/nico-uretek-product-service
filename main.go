@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/NicoMartina/nico-uretek-product-service/routes"
+	"github.com/NicoMartina/nico-uretek-product-service/store"
 )
 
 func main() {
+	store.LoadProducts()
 	r := routes.RegisterRoutes()
+	
 
 	
 
